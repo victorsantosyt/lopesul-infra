@@ -3,6 +3,7 @@ let processEvent;
 describe('stateMachine validation', () => {
   beforeAll(async () => {
     process.env.RELAY_DRY_RUN = '1';
+    process.env.MIKROTIK_NODES = '[{"id":"LOPESUL-HOTSPOT-06","host":"127.0.0.1","user":"u","pass":"p","port":8728}]';
     const mod = await import('../src/services/stateMachine.js');
     processEvent = mod.processEvent;
   });

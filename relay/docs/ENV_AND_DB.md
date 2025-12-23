@@ -18,10 +18,11 @@
 - `RELAY_OFFLINE_MAX_AGE_SEC`: recusa ações se peer WG estiver offline há mais que X s (quando `peerPublicKey` é enviado no payload).
 
 ## WireGuard / Mikrotik
+- `MIKROTIK_NODES` **obrigatório**: JSON com id/host/user/pass/port/timeout (ex.: `[{"id":"HOTSPOT-01","host":"10.200.1.10","user":"relay","pass":"<senha>","port":8728}]`).
 - `WG_INTERFACE`: interface WG no host do relay (necessário fora de DRY_RUN).
 - `WG_VPS_PUBLIC_KEY`, `WG_VPS_ENDPOINT`: chave/endpoint do VPS usados em bootstrap/config Mikrotik.
 - `RELAY_RECONCILE_INTERVAL_MS`, `RELAY_RECONCILE_REMOVE`: reconciliador de peers (intervalo e remoção de peers órfãos).
-- Mikrotik nodes (backend/relay): `MIKROTIK_NODES` JSON com host/user/pass/port/timeout ou meta gravada no registry (deviceId → publicKey → mikrotikIp).
+- Mikrotik meta por device pode ser gravada no registry (deviceId → publicKey → mikrotikIp) para bindings.
 
 ## Job store / locks
 - `RELAY_USE_SQLITE` (1/0): usa SQLite em `data/relay.db`.

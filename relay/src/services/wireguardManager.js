@@ -124,7 +124,7 @@ export async function getPeer(deviceId) {
   return null;
 }
 
-export async function addPeer({ deviceId, publicKey, allowedIps }) {
+export async function addPeer({ deviceId, publicKey, allowedIps, endpoint = null, keepalive = null, presharedKey = null }) {
   if (!deviceId) throw new Error('deviceId required');
   if (!validatePublicKey(publicKey)) throw new Error('invalid publicKey');
   if (!validateAllowedIps(allowedIps)) throw new Error('allowedIps required');
@@ -132,32 +132,41 @@ export async function addPeer({ deviceId, publicKey, allowedIps }) {
   const allowed = Array.isArray(allowedIps) ? allowedIps.join(',') : String(allowedIps);
   const meta = readMeta();
 
+  const argsBase = ['set', WG_IFACE, 'peer', publicKey, 'allowed-ips', allowed];
+  if (endpoint) argsBase.push('endpoint', endpoint);
+  if (keepalive !== null && keepalive !== undefined) argsBase.push('persistent-keepalive', String(keepalive));
+  if (presharedKey) argsBase.push('preshared-key', presharedKey);
+
   // check existing
   const peers = await listPeers();
   const existing = peers.find(p => p.publicKey === publicKey || p.deviceId === deviceId);
   let created = false;
   let updated = false;
   if (existing) {
-    // if allowedIps differ, update
-    if ((existing.allowedIps || '') !== allowed) {
-      if (!DRY_RUN) await callWg(['set', WG_IFACE, 'peer', publicKey, 'allowed-ips', allowed]);
+    const needsUpdate =
+      (existing.allowedIps || '') !== allowed ||
+      (endpoint && existing.endpoint !== endpoint) ||
+      (keepalive && existing.keepalive !== keepalive) ||
+      (presharedKey && existing.preshared !== presharedKey);
+    if (needsUpdate) {
+      if (!DRY_RUN) await callWg(argsBase);
       updated = true;
-      logger.info('wireguard.updatePeer', { deviceId, publicKey, allowedIps });
+      logger.info('wireguard.updatePeer', { deviceId, publicKey, allowedIps, endpoint, keepalive: keepalive || null });
     } else {
       logger.info('wireguard.addPeer.noop', { deviceId, publicKey });
     }
   } else {
     // create peer
-    if (!DRY_RUN) await callWg(['set', WG_IFACE, 'peer', publicKey, 'allowed-ips', allowed]);
+    if (!DRY_RUN) await callWg(argsBase);
     created = true;
-    logger.info('wireguard.addPeer.created', { deviceId, publicKey, allowedIps });
+    logger.info('wireguard.addPeer.created', { deviceId, publicKey, allowedIps, endpoint, keepalive: keepalive || null });
   }
 
   // persist meta mapping for deviceId -> publicKey
   meta[publicKey] = deviceId;
   writeMeta(meta);
   // update registry for convenience
-  deviceRegistry.registerDevice({ deviceId, publicKey, allowedIps });
+  deviceRegistry.registerDevice({ deviceId, publicKey, allowedIps, meta: { endpoint, keepalive, presharedKey } });
   return { created, updated };
 }
 

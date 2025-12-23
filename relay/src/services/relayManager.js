@@ -10,14 +10,14 @@ class RelayManager {
 
   async provisionDevice(payload = {}) {
     // validate payload
-    const { deviceId, publicKey, allowedIps, tunnelIp, meta } = payload || {};
+    const { deviceId, publicKey, allowedIps, tunnelIp, meta, endpoint, keepalive, presharedKey } = payload || {};
     if (!publicKey || !allowedIps) throw new RelayError('invalid_payload', 'invalid_payload', 400);
 
     // idempotent register
-    const rec = deviceRegistry.registerDevice({ deviceId, publicKey, allowedIps, meta });
+    const rec = deviceRegistry.registerDevice({ deviceId, publicKey, allowedIps, meta: { ...meta, endpoint, keepalive, presharedKey } });
 
     // ensure wg peer exists
-    await wg.addPeer({ deviceId: rec.deviceId, publicKey: rec.publicKey, allowedIps: rec.allowedIps });
+    await wg.addPeer({ deviceId: rec.deviceId, publicKey: rec.publicKey, allowedIps: rec.allowedIps, endpoint, keepalive, presharedKey });
 
     // optionally validate mikrotik via tunnel ip
     if (tunnelIp) {

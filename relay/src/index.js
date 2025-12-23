@@ -20,6 +20,7 @@ import wgManager from './services/wireguardManager.js';
 import wireguardStatus from './services/wireguardStatus.js';
 import peerBinding from './services/peerBinding.service.js';
 import mikrotikProbe from './services/mikrotikProbe.service.js';
+import routerRegistry from './routes/routerRegistry.js';
 import reconciler from './services/reconciler.js';
 
 // auth: if RELAY_API_SECRET is set, require HMAC signature on POST/DELETE/SYNC endpoints
@@ -102,6 +103,9 @@ app.use((req, res, next) => {
 app.get("/relay/health", (req, res) => {
   res.json({ ok: true, uptime: process.uptime() });
 });
+
+// Router registry endpoints (backend UI)
+app.use('/relay/routers', routerRegistry);
 
 // Prometheus-style metrics snapshot
 app.get("/relay/metrics", async (req, res) => {

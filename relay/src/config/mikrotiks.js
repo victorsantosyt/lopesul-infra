@@ -1,21 +1,20 @@
 // src/config/mikrotiks.js
 
-// Exemplo de formato vindo do .env:
-// MIKROTIK_NODES='[{"id":"LOPESUL-HOTSPOT-06","host":"10.200.200.6","user":"relay","pass":"api2025","port":8728}]'
+// Exemplo de formato esperado no .env:
+// MIKROTIK_NODES='[{"id":"HOTSPOT-01","host":"10.200.1.10","user":"relay","pass":"<senha>","port":8728}]'
 
-export const mikrotikNodes = JSON.parse(
-  process.env.MIKROTIK_NODES ||
-    `[
-      {
-        "id": "LOPESUL-HOTSPOT-06",
-        "host": "10.200.200.6",
-        "user": "relay",
-        "pass": "api2025",
-        "port": 8728,
-        "timeoutMs": 8000
-      }
-    ]`
-);
+if (!process.env.MIKROTIK_NODES) {
+  throw new Error('MIKROTIK_NODES env is required (JSON array with id/host/user/pass/port)');
+}
+
+let parsed = [];
+try {
+  parsed = JSON.parse(process.env.MIKROTIK_NODES);
+} catch (e) {
+  throw new Error('Invalid MIKROTIK_NODES JSON');
+}
+
+export const mikrotikNodes = parsed;
 
 export function getMikById(mikId) {
   const node = mikrotikNodes.find((m) => m.id === mikId);

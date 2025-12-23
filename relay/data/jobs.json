@@ -94,5 +94,29 @@
       "pedidoId": "123"
     },
     "createdAt": 1766465118980
+  },
+  {
+    "id": "trial-u6ex2dk",
+    "type": "REVOKE_TRIAL",
+    "eventId": "evt-valid-trial",
+    "runAt": 1766466809288,
+    "payload": {
+      "mikId": "LOPESUL-HOTSPOT-06",
+      "mac": "AA:BB:CC:DD:EE:FF",
+      "pedidoId": "123"
+    },
+    "createdAt": 1766466509288
+  },
+  {
+    "id": "trial-ujpqdoi",
+    "type": "REVOKE_TRIAL",
+    "eventId": "evt-valid-trial",
+    "runAt": 1766467650372,
+    "payload": {
+      "mikId": "LOPESUL-HOTSPOT-06",
+      "mac": "AA:BB:CC:DD:EE:FF",
+      "pedidoId": "123"
+    },
+    "createdAt": 1766467350372
   }
 ]
