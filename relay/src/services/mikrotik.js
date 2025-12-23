@@ -57,7 +57,7 @@ export async function runMikrotikCommands(mikConfig, commands = []) {
         console.log(`[relay-mikrotik] ${host} > ${cmd}`);
         await chan.write(cmd);
       } catch (err) {
-        console.error(`[relay-mikrotik] ERRO cmd="${cmd}"`, err.message);
+        console.error('[relay-mikrotik] ERRO ao executar comando em host "%s": %s', host, err.message);
         result.ok = false;
         result.errors.push({ cmd, message: err.message });
       }
