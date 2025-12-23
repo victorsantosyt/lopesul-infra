@@ -1,0 +1,83 @@
+// src/services/mikrotik.js
+// Executor Mikrotik: único lugar que toca o roteador.
+// Import dinâmico de `mikronode-ng` para permitir DRY_RUN sem precisar da dependência.
+
+function isDryRun() {
+  return process.env.RELAY_DRY_RUN === "1" || process.env.RELAY_DRY_RUN === "true";
+}
+
+async function makeRouter(mikConfig) {
+  // Import dinâmico para evitar erro quando pacote não estiver instalado
+  const pkg = await import("mikronode-ng");
+  const mod = pkg.default || pkg;
+  const { Router } = mod;
+  return new Router({
+    host: mikConfig.host,
+    user: mikConfig.user,
+    password: mikConfig.pass,
+    port: mikConfig.port || 8728,
+    timeout: mikConfig.timeoutMs || 8000
+  });
+}
+
+export async function runMikrotikCommands(mikConfig, commands = []) {
+  const { host } = mikConfig;
+
+  const result = {
+    ok: true,
+    host,
+    commands,
+    dryRun: !!isDryRun(),
+    errors: []
+  };
+
+  if (isDryRun()) {
+    for (const cmd of commands) {
+      console.log(`[relay-mikrotik][DRY_RUN] ${host} > ${cmd}`);
+    }
+    return result;
+  }
+
+  let conn;
+  try {
+    conn = await makeRouter(mikConfig);
+  } catch (err) {
+    result.ok = false;
+    result.errors.push({ cmd: "CONNECTION_SETUP", message: err.message });
+    console.error("[relay-mikrotik] failed to setup connection", host, err.message);
+    return result;
+  }
+
+  try {
+    const connection = await conn.connect();
+    const chan = connection.openChannel("relay-batch");
+
+    for (const cmd of commands) {
+      try {
+        console.log(`[relay-mikrotik] ${host} > ${cmd}`);
+        await chan.write(cmd);
+      } catch (err) {
+        console.error(`[relay-mikrotik] ERRO cmd="${cmd}"`, err.message);
+        result.ok = false;
+        result.errors.push({ cmd, message: err.message });
+      }
+    }
+
+    try {
+      chan.close();
+    } catch (e) {
+      // ignore
+    }
+    try {
+      connection.close();
+    } catch (e) {
+      // ignore
+    }
+  } catch (err) {
+    console.error("[relay-mikrotik] Erro de execução", host, err.message);
+    result.ok = false;
+    result.errors.push({ cmd: "EXEC", message: err.message });
+  }
+
+  return result;
+}

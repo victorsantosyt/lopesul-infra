@@ -1,0 +1,98 @@
+[
+  {
+    "id": "trial-os082kl",
+    "type": "REVOKE_TRIAL",
+    "eventId": "evt-valid-trial",
+    "runAt": 1766463655662,
+    "payload": {
+      "mikId": "LOPESUL-HOTSPOT-06",
+      "mac": "AA:BB:CC:DD:EE:FF",
+      "pedidoId": "123"
+    },
+    "createdAt": 1766463355662
+  },
+  {
+    "id": "trial-darxzhf",
+    "type": "REVOKE_TRIAL",
+    "eventId": "evt-valid-trial",
+    "runAt": 1766463814737,
+    "payload": {
+      "mikId": "LOPESUL-HOTSPOT-06",
+      "mac": "AA:BB:CC:DD:EE:FF",
+      "pedidoId": "123"
+    },
+    "createdAt": 1766463514737
+  },
+  {
+    "id": "trial-aj45he9",
+    "type": "REVOKE_TRIAL",
+    "eventId": "evt-valid-trial",
+    "runAt": 1766463834838,
+    "payload": {
+      "mikId": "LOPESUL-HOTSPOT-06",
+      "mac": "AA:BB:CC:DD:EE:FF",
+      "pedidoId": "123"
+    },
+    "createdAt": 1766463534838
+  },
+  {
+    "id": "trial-yn2oqzz",
+    "type": "REVOKE_TRIAL",
+    "eventId": "evt-valid-trial",
+    "runAt": 1766463862646,
+    "payload": {
+      "mikId": "LOPESUL-HOTSPOT-06",
+      "mac": "AA:BB:CC:DD:EE:FF",
+      "pedidoId": "123"
+    },
+    "createdAt": 1766463562646
+  },
+  {
+    "id": "trial-renx8je",
+    "type": "REVOKE_TRIAL",
+    "eventId": "evt-valid-trial",
+    "runAt": 1766464068937,
+    "payload": {
+      "mikId": "LOPESUL-HOTSPOT-06",
+      "mac": "AA:BB:CC:DD:EE:FF",
+      "pedidoId": "123"
+    },
+    "createdAt": 1766463768938
+  },
+  {
+    "id": "trial-ibne93s",
+    "type": "REVOKE_TRIAL",
+    "eventId": "evt-valid-trial",
+    "runAt": 1766464295269,
+    "payload": {
+      "mikId": "LOPESUL-HOTSPOT-06",
+      "mac": "AA:BB:CC:DD:EE:FF",
+      "pedidoId": "123"
+    },
+    "createdAt": 1766463995269
+  },
+  {
+    "id": "trial-xzae239",
+    "type": "REVOKE_TRIAL",
+    "eventId": "evt-valid-trial",
+    "runAt": 1766464389389,
+    "payload": {
+      "mikId": "LOPESUL-HOTSPOT-06",
+      "mac": "AA:BB:CC:DD:EE:FF",
+      "pedidoId": "123"
+    },
+    "createdAt": 1766464089389
+  },
+  {
+    "id": "trial-ao5axer",
+    "type": "REVOKE_TRIAL",
+    "eventId": "evt-valid-trial",
+    "runAt": 1766465418980,
+    "payload": {
+      "mikId": "LOPESUL-HOTSPOT-06",
+      "mac": "AA:BB:CC:DD:EE:FF",
+      "pedidoId": "123"
+    },
+    "createdAt": 1766465118980
+  }
+]

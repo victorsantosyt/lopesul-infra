@@ -1,0 +1,13 @@
+[
+  {
+    "deviceId": "test-device-1766288326360",
+    "publicKey": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=",
+    "allowedIps": [
+      "10.0.0.2/32"
+    ],
+    "meta": {},
+    "status": "deprovisioned",
+    "createdAt": 1766288326399,
+    "updatedAt": 1766288326420
+  }
+]
